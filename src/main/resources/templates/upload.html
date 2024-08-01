@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>파일 업로드</title>
+    <style>
+        #progress {
+            width: 100%;
+            background-color: #f3f3f3;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+<h1>파일 업로드</h1>
+<form id="uploadForm" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" required>
+    <button type="submit">업로드</button>
+</form>
+<div id="progress">
+    <div id="progress-bar"></div>
+</div>
+<p id="progress-text">진행도: 0%</p>
+
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 폼 제출 막기
+        const socket = new WebSocket('ws://localhost:8080/progress');
+
+        socket.onmessage = function(event) {
+            const progress = event.data.split(" ")[1];
+            const progressBar = document.getElementById("progress-bar");
+            const progressText = document.getElementById("progress-text");
+            progressBar.style.width = progress;
+            progressText.innerText = "진행도: " + progress;
+        };
+
+        const formData = new FormData(document.getElementById("uploadForm"));
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload", true);
+        xhr.onload = function () {
+            if (xhr.status !== 200) {
+                // 서버 응답이 200일 경우 페이지 리다이렉션
+                alert("업로드 실패");
+            }
+        };
+        xhr.send(formData);
+    });
+</script>
+</body>
+</html>

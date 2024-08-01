@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>카카오톡 채팅방 분석 결과</title>
+</head>
+<body>
+<h1>카카오톡 채팅방 분석 결과</h1>
+<table>
+    <tr>
+        <th>이름</th>
+        <th>수집 시작일</th>
+    </tr>
+    <tr>
+        <td th:text="${title}"></td>
+        <td th:text="${date}"></td>
+    </tr>
+</table>
+<br>
+<h2>사용자 메시지 수</h2>
+<table>
+    <tr>
+        <th>순위</th>
+        <th>사용자</th>
+        <th>메시지 수</th>
+    </tr>
+    <tr th:each="entry, stat : ${sortedUsers}">
+        <td th:text="${stat.index + 1}"></td>
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value}"></td>
+    </tr>
+</table>
+
+<h2>긍정적인 단어를 가장 많이 사용한 사용자</h2>
+<table>
+    <tr>
+        <th>순위</th>
+        <th>사용자</th>
+        <th>긍정적인 단어 수</th>
+    </tr>
+    <tr th:each="entry, stat : ${positiveSortedUsers}">
+        <td th:text="${stat.index + 1}"></td>
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value}"></td>
+    </tr>
+</table>
+
+<h2>부정적인 단어를 가장 많이 사용한 사용자</h2>
+<table>
+    <tr>
+        <th>순위</th>
+        <th>사용자</th>
+        <th>부정적인 단어 수</th>
+    </tr>
+    <tr th:each="entry, stat : ${negativeSortedUsers}">
+        <td th:text="${stat.index + 1}"></td>
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value}"></td>
+    </tr>
+</table>
+
+<h2>중립적인 단어를 가장 많이 사용한 사용자</h2>
+<table>
+    <tr>
+        <th>순위</th>
+        <th>사용자</th>
+        <th>중립적인 단어 수</th>
+    </tr>
+    <tr th:each="entry, stat : ${neutralSortedUsers}">
+        <td th:text="${stat.index + 1}"></td>
+        <td th:text="${entry.key}"></td>
+        <td th:text="${entry.value}"></td>
+    </tr>
+</table>
+
+<a href="/">다시 분석하기</a>
+</body>
+</html>
